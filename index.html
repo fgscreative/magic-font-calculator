@@ -1169,6 +1169,14 @@ function getCssFree(sc,b){
   if(sc.sp==='lineheight')return cblock(v.map(function(x){return['--lh-'+x.lbl.replace('x','').replace('.','-'),parseFloat(x.lbl.replace('x','')).toFixed(1)];}));
   return cblock(v.filter(function(x){return x.px>=4;}).map(function(x){var sf=x.idx===0?'base':(x.idx>0?'plus'+x.idx:'minus'+Math.abs(x.idx));return['--font-'+sc.pfx+'-'+sf,x.px.toFixed(2)+'px /* '+rv2(x.px)+' */'];}));
 }
+/* clamp() for one scale step: same logic as the CSS export (two-ratio aware) */
+function stepClamp(sc,b,x){
+  var two = S.minRatio !== null && S.maxRatio !== null && sc.sp !== 'lineheight' && sc.sp !== 'musical';
+  if (!two) return clamp(x.px);
+  var mn = getVals(sc, b, S.minRatio).filter(function(y){ return y.idx === x.idx; })[0];
+  var mx = getVals(sc, b, S.maxRatio).filter(function(y){ return y.idx === x.idx; })[0];
+  return clampFor(mn ? mn.px : x.px * FLUID_BASE_MIN, mx ? mx.px : x.px * FLUID_BASE_MAX);
+}
 function getCss(sc,b){
   var hasTwoRatio = S.minRatio !== null && S.maxRatio !== null && sc.sp !== 'lineheight' && sc.sp !== 'musical';
   var v = getVals(sc, b); // nominal values (at current/single ratio)
@@ -2183,8 +2191,11 @@ function buildScaleEl(sc){
   var el=document.createElement('details');el.className='mfc-scale'+(isActive?' active':'');el.id='s-'+sc.id;
   var ii=(IL[sc.illo]||'').replace(/<svg[^>]*>/,'').replace('</svg>','');
   var rows=vis.map(function(v){
-    var clampCol=isPro()&&sc.sp!=='lineheight'?'<td class="clamp-col mono">'+clamp(v.px)+'</td>':'';
-    return '<tr class="'+(v.isBase?'base':'')+'"><td class="lbl mono">'+v.lbl+'</td><td class="val mono">'+v.px.toFixed(2)+'px <span class="rem mono">'+rv(v.px)+'</span></td><td class="copy-col"><button class="mfc-copy-val" type="button">'+CI+'</button></td><td class="contrast">'+(sc.sp==='lineheight'?'':wcag(ratio,v.px))+'</td>'+clampCol+'</tr>';
+    var hasClamp=isPro()&&sc.sp!=='lineheight';
+    var cv=hasClamp?stepClamp(sc,S.base,v):'';
+    var clampCol=hasClamp?'<td class="clamp-col mono">'+cv+'</td>':'';
+    var copyVal=hasClamp?cv:v.px.toFixed(2)+'px';
+    return '<tr class="'+(v.isBase?'base':'')+'"><td class="lbl mono">'+v.lbl+'</td><td class="val mono">'+v.px.toFixed(2)+'px <span class="rem mono">'+rv(v.px)+'</span></td><td class="copy-col"><button class="mfc-copy-val" type="button" data-copy="'+copyVal+'" title="'+(hasClamp?'Copy clamp()':'Copy px value')+'">'+CI+'</button></td><td class="contrast">'+(sc.sp==='lineheight'?'':wcag(ratio,v.px))+'</td>'+clampCol+'</tr>';
   }).join('');
   var cssPanel=isPro()
     ?'<div class="mfc-css-panel">'+
@@ -2218,7 +2229,7 @@ function buildScaleEl(sc){
   el.querySelector('.mfc-preview-btn').onclick=function(e){e.preventDefault();e.stopPropagation();setActive(sc.id);};
   el.querySelector('.mfc-css-toggle').onclick=function(){var out=el.querySelector('.mfc-css-out');var open=out.style.display==='block';out.style.display=open?'none':'block';this.textContent=open?'Show CSS variables':'Hide CSS variables';};
   el.querySelector('.mfc-copy-css').onclick=function(){cpTxt(css,this);this.textContent='Copied!';setTimeout(function(){var c=el.querySelector('.mfc-copy-css');if(c)c.textContent='Copy CSS';},1500);};
-  el.querySelectorAll('.mfc-copy-val').forEach(function(btn,i){var v=vis[i];btn.onclick=function(e){e.stopPropagation();cpTxt(v.px.toFixed(2)+'px',btn);};});
+  el.querySelectorAll('.mfc-copy-val').forEach(function(btn){btn.onclick=function(e){e.stopPropagation();cpTxt(btn.getAttribute('data-copy'),btn);};});
   return el;
 }
 function setActive(id){
