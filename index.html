@@ -544,11 +544,11 @@ body { margin:0; padding:1.5rem 5.5rem; background:#f8f7f5; font-family:'Geist',
 .mfc-modal-actions { display:flex;gap:.375rem;flex-wrap:wrap;margin-bottom:.875rem; }
 .mfc-modal-btn-p { flex:1;height:42px;border:none;border-radius:.375rem;font-size:.82rem!important;font-weight:700;cursor:pointer;background:var(--acc);color:#fff; }
 .mfc-modal-btn-p:hover { opacity:.85; }
-/* Tally CTA button */
+/* Primary modal CTA button */
 .mfc-tally-btn { width:100%;height:48px;padding:0 1.5rem;border:none;border-radius:.375rem;font-size:.9rem!important;font-weight:700;cursor:pointer;background:var(--acc);color:#fff;letter-spacing:.01em;display:flex;align-items:center;justify-content:center;gap:.35rem;transition:opacity .15s,transform .15s; }
 .mfc-tally-btn:hover { opacity:.88;transform:translateY(-1px); }
 
-/* ── Sticky Tally CTA ── */
+/* ── Sticky contact CTA ── */
 .mfc-sticky-cta {
   position:fixed;
   bottom:1.5rem;
@@ -575,6 +575,8 @@ body { margin:0; padding:1.5rem 5.5rem; background:#f8f7f5; font-family:'Geist',
 .mfc-sticky-cta:active { transform:translateY(0); }
 /* Hide on mobile — too much screen real estate */
 @media(max-width:600px){ .mfc-sticky-cta { display:none; } }
+/* Keep footer links clear of the sticky button */
+@media(min-width:601px){ body > footer { padding-bottom:5rem!important; } }
 .mfc-modal-key-lbl { font-size:.7rem;color:#888;margin-bottom:.35rem; }
 .mfc-modal-key-row { display:flex;gap:.375rem; }
 .mfc-modal-key-input { flex:1;height:38px;padding:0 .75rem;font-size:.78rem!important;border:1.5px solid rgba(0,0,0,.12);border-radius:.375rem;background:#f8f8f8;color:#333; }
@@ -627,7 +629,6 @@ body { margin:0; padding:1.5rem 5.5rem; background:#f8f7f5; font-family:'Geist',
   font-family:var(--mono)!important;
 }
 </style>
-  <script async src="https://tally.so/widgets/embed.js"></script>
 </head>
 <body>
 
@@ -637,7 +638,7 @@ body { margin:0; padding:1.5rem 5.5rem; background:#f8f7f5; font-family:'Geist',
   <span id="devStatus">Pro tier</span>
   <div class="mfc-tier-toggle">
     <button class="mfc-tier-btn" id="btnFree" type="button">Free</button>
-    <button class="mfc-tier-btn on-pro" id="btnPro" type="button" data-tally-open="kdRkZo" data-tally-emoji-text="👋" data-tally-emoji-animation="wave" data-tally-width="420">Pro ✦</button>
+    <button class="mfc-tier-btn on-pro" id="btnPro" type="button">Pro ✦</button>
   </div>
 </div>
 
@@ -668,7 +669,7 @@ body { margin:0; padding:1.5rem 5.5rem; background:#f8f7f5; font-family:'Geist',
     <div class="mfc-pro-key-form" id="proKeyForm">
       <input class="mfc-pro-key-input" id="proKeyInput" type="text" placeholder="Have a Pro key? Enter here…">
       <button class="mfc-btn mfc-btn-act" id="proKeyBtn" type="button">Activate</button>
-      <button class="mfc-btn mfc-btn-pro" type="button" id="upgradeBtn" data-tally-open="kdRkZo" data-tally-emoji-text="👋" data-tally-emoji-animation="wave" data-tally-width="420">
+      <button class="mfc-btn mfc-btn-pro" type="button" id="upgradeBtn" data-mfc-unlock>
         <!-- i) phi icon in button -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><ellipse cx="12" cy="12" rx="9" ry="9" opacity=".4"/><path d="M12 3 A9 9 0 0 1 12 21" opacity=".7"/><path d="M12 7 A5 5 0 0 1 12 17" /><text x="12" y="15" font-size="7" fill="currentColor" stroke="none" text-anchor="middle" font-style="italic">φ</text></svg>
         Upgrade to Pro
@@ -763,7 +764,7 @@ body { margin:0; padding:1.5rem 5.5rem; background:#f8f7f5; font-family:'Geist',
             <!-- Free hint — inline right, shown when Free -->
             <div class="mfc-font-pro-hint" id="fontProHint">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="10" height="10"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
-              <span>Full search — <button type="button" data-tally-open="kdRkZo" data-tally-emoji-text="👋" data-tally-emoji-animation="wave" data-tally-width="420" style="background:none;border:none;cursor:pointer;color:var(--acc);font-size:.6rem;font-weight:700;padding:0;text-decoration:underline;">Unlock Pro</button></span>
+              <span>Full search — <button type="button" data-mfc-unlock style="background:none;border:none;cursor:pointer;color:var(--acc);font-size:.6rem;font-weight:700;padding:0;text-decoration:underline;">Unlock Pro</button></span>
             </div>
             </div><!-- end .mfc-font-select-row -->
           </div>
@@ -791,7 +792,7 @@ body { margin:0; padding:1.5rem 5.5rem; background:#f8f7f5; font-family:'Geist',
           </div>
           <!-- Row 3: hint or inputs -->
           <div class="mfc-ratio-row" id="ratioSingleRow">
-            <span class="mfc-ratio-hint" id="ratioHintFree">Per-scale ratio &mdash; <button type="button" data-tally-open="kdRkZo" data-tally-emoji-text="👋" data-tally-emoji-animation="wave" data-tally-width="420" style="background:none;border:none;cursor:pointer;color:var(--acc);font-size:.62rem;font-weight:700;padding:0;text-decoration:underline;">Unlock Fluid ✦</button></span>
+            <span class="mfc-ratio-hint" id="ratioHintFree">Per-scale ratio &mdash; <button type="button" data-mfc-unlock style="background:none;border:none;cursor:pointer;color:var(--acc);font-size:.62rem;font-weight:700;padding:0;text-decoration:underline;">Unlock Fluid ✦</button></span>
             <span class="mfc-ratio-hint" id="ratioHintPro" style="display:none;">Per-scale ratio</span>
           </div>
           <div class="mfc-ratio-row" id="ratioDualRow" style="display:none;">
@@ -949,13 +950,8 @@ body { margin:0; padding:1.5rem 5.5rem; background:#f8f7f5; font-family:'Geist',
       <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 8 6 11 13 4"/></svg>Tailwind config + Style Dictionary JSON export</li>
     </ul>
     <div class="mfc-modal-actions">
-      <button class="mfc-modal-btn-p mfc-tally-btn"
-        data-tally-open="kdRkZo"
-        data-tally-emoji-text="👋"
-        data-tally-emoji-animation="wave"
-        data-tally-width="420"
-        type="button">
-        Get MFC Pro ✦
+      <button class="mfc-modal-btn-p mfc-tally-btn" data-mfc-unlock type="button">
+        Unlock Pro ✦ free during the beta
       </button>
     </div>
     <div class="mfc-modal-key-lbl">Already purchased? Enter your key:</div>
@@ -1295,7 +1291,7 @@ function getActiveScaleName(){
 function buildSpacing(){
   var p=document.getElementById('spacingPanel');
   if(!isPro()){
-    p.innerHTML='<div class="mfc-pro-cta"><div><strong>Spacing tokens — Pro</strong><p>Generate a fluid proportional spacing system from your active type scale — individual tokens and one-up pairs. Exports as CSS clamp(), Tailwind config, or Figma JSON.</p><div class="mfc-pro-cta-actions"><button class="mfc-btn mfc-btn-pro" type="button" data-tally-open="kdRkZo" data-tally-emoji-text="👋" data-tally-emoji-animation="wave" data-tally-width="420">Unlock Pro</button></div></div></div>';
+    p.innerHTML='<div class="mfc-pro-cta"><div><strong>Spacing tokens — Pro</strong><p>Generate a fluid proportional spacing system from your active type scale — individual tokens and one-up pairs. Exports as CSS clamp(), Tailwind config, or Figma JSON.</p><div class="mfc-pro-cta-actions"><button class="mfc-btn mfc-btn-pro" type="button" data-mfc-unlock>Unlock Pro</button></div></div></div>';
     return;
   }
   var b=S.base;
@@ -1434,7 +1430,7 @@ function trackingCssAll(sc, b) {
 function buildTracking() {
   var p = document.getElementById('trackingPanel');
   if (!isPro()) {
-    p.innerHTML = '<div class="mfc-pro-cta"><div><strong>Letter Spacing — Pro</strong><p>Generate scale-aware tracking tokens and universal optical presets. Tighter at large sizes, looser at small — mathematically correct optical compensation.</p><div class="mfc-pro-cta-actions"><button class="mfc-btn mfc-btn-pro" type="button" data-tally-open="kdRkZo" data-tally-emoji-text="👋" data-tally-emoji-animation="wave" data-tally-width="420">Unlock Pro</button></div></div></div>';
+    p.innerHTML = '<div class="mfc-pro-cta"><div><strong>Letter Spacing — Pro</strong><p>Generate scale-aware tracking tokens and universal optical presets. Tighter at large sizes, looser at small — mathematically correct optical compensation.</p><div class="mfc-pro-cta-actions"><button class="mfc-btn mfc-btn-pro" type="button" data-mfc-unlock>Unlock Pro</button></div></div></div>';
     return;
   }
 
@@ -1546,7 +1542,7 @@ function buildTracking() {
 function buildPairings(){
   var g=document.getElementById('pairingsGrid');
   if(!isPro()){
-    g.innerHTML='<div class="mfc-pro-cta"><div><strong>Font pairings — Pro</strong><p>14 curated heading + body pairs. Click any pair to apply instantly to the live preview.</p><div class="mfc-pro-cta-actions"><button class="mfc-btn mfc-btn-pro" type="button" data-tally-open="kdRkZo" data-tally-emoji-text="👋" data-tally-emoji-animation="wave" data-tally-width="420">Unlock Pro</button></div></div></div>';
+    g.innerHTML='<div class="mfc-pro-cta"><div><strong>Font pairings — Pro</strong><p>14 curated heading + body pairs. Click any pair to apply instantly to the live preview.</p><div class="mfc-pro-cta-actions"><button class="mfc-btn mfc-btn-pro" type="button" data-mfc-unlock>Unlock Pro</button></div></div></div>';
     return;
   }
   var cats={};
@@ -1645,7 +1641,7 @@ function buildGraph(sc, wrapper) {
   content.id = 'previewContent';
 
   if (!isPro()) {
-    content.innerHTML = '<div class="mfc-preview-canvas"><div style="padding:1.5rem"><div class="mfc-pro-cta"><div><strong>Scale Graph — Pro</strong><p>Visual fluid type graph showing how each step scales across viewport widths.</p><div class="mfc-pro-cta-actions"><button class="mfc-btn mfc-btn-pro" type="button" data-tally-open="kdRkZo" data-tally-emoji-text="👋" data-tally-emoji-animation="wave" data-tally-width="420">Unlock Pro</button></div></div></div></div></div>';
+    content.innerHTML = '<div class="mfc-preview-canvas"><div style="padding:1.5rem"><div class="mfc-pro-cta"><div><strong>Scale Graph — Pro</strong><p>Visual fluid type graph showing how each step scales across viewport widths.</p><div class="mfc-pro-cta-actions"><button class="mfc-btn mfc-btn-pro" type="button" data-mfc-unlock>Unlock Pro</button></div></div></div></div></div>';
     wrapper.innerHTML = ''; wrapper.appendChild(content);
     setupResizeHandle(); return;
   }
@@ -1968,7 +1964,7 @@ function buildScalePreview(sc,fnt,wrapper){
 function buildHierarchy(sc,fnt,wrapper){
   if(!isPro()){
     var lock=document.createElement('div');lock.id='previewContent';
-    lock.innerHTML='<div class="mfc-preview-canvas"><div style="padding:1.5rem"><div class="mfc-pro-cta"><div><strong>H1–H6 preview — Pro</strong><div class="mfc-pro-cta-actions"><button class="mfc-btn mfc-btn-pro" type="button" data-tally-open="kdRkZo" data-tally-emoji-text="👋" data-tally-emoji-animation="wave" data-tally-width="420">Unlock Pro</button></div></div></div></div></div>';
+    lock.innerHTML='<div class="mfc-preview-canvas"><div style="padding:1.5rem"><div class="mfc-pro-cta"><div><strong>H1–H6 preview — Pro</strong><div class="mfc-pro-cta-actions"><button class="mfc-btn mfc-btn-pro" type="button" data-mfc-unlock>Unlock Pro</button></div></div></div></div></div>';
     wrapper.innerHTML='';wrapper.appendChild(lock);
     setupResizeHandle();return;
   }
@@ -2390,7 +2386,8 @@ document.getElementById('mfcText').oninput=updatePreview;
 document.getElementById('proKeyBtn').onclick=function(){activateKey(document.getElementById('proKeyInput').value);};
 document.getElementById('proKeyInput').onkeydown=function(e){if(e.key==='Enter')activateKey(this.value);};
 document.getElementById('deactivateBtn').onclick=function(){setTier(false);};
-// upgradeBtn now uses data-tally-open directly
+// Beta: every upgrade button unlocks Pro for free
+document.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest('[data-mfc-unlock]');if(!t)return;e.preventDefault();setTier(true);closeModal();});
 document.getElementById('modalKeySubmit').onclick=function(){activateKey(document.getElementById('modalKeyInput').value);};
 document.getElementById('proModal').onclick=function(e){if(e.target===this)closeModal();};
 
@@ -2528,17 +2525,17 @@ window.addEventListener('resize',function(){applyWrapperWidth();});
   </div>
 </div>
 
-<!-- Impressum modal -->
+<!-- Legal notice modal -->
 <div class="mfc-modal-overlay" id="imprintModal" style="z-index:9100;">
   <div class="mfc-modal" style="max-height:85vh;overflow-y:auto;">
     <button class="mfc-modal-close" type="button" onclick="document.getElementById('imprintModal').classList.remove('open')">✕</button>
-    <div class="mfc-modal-h" style="font-size:.95rem!important;">Impressum</div>
+    <div class="mfc-modal-h" style="font-size:.95rem!important;">Legal Notice (Impressum)</div>
     <div style="font-size:.72rem;color:#555;line-height:1.75;">
-      <p style="margin-bottom:.625rem"><strong>Angaben gemäß § 5 DDG</strong><br>Felipe Sayao Studio<br>Inhaber: Felipe Gonçalves Sayao<br>Ludwig-Jahn-Str. 10<br>47533 Kleve<br>Deutschland</p>
-      <p style="margin-bottom:.625rem"><strong>Kontakt</strong><br>Telefon: +49 163 5155907<br>E-Mail: <a href="mailto:hello@felipesayao.studio" style="color:#FF7F5C;">hello@felipesayao.studio</a></p>
-      <p style="margin-bottom:.625rem"><strong>Umsatzsteuer-ID</strong><br>Umsatzsteuer-Identifikationsnummer gemäß § 27a UStG: DE334327175</p>
-      <p style="margin-bottom:.625rem"><strong>Verantwortlich für den Inhalt</strong><br>Felipe Gonçalves Sayao, Anschrift wie oben</p>
-      <p style="margin-bottom:0"><strong>Verbraucherstreitbeilegung</strong><br>Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
+      <p style="margin-bottom:.625rem"><strong>Information pursuant to § 5 DDG (German Digital Services Act)</strong><br>Felipe Sayao Studio<br>Owner: Felipe Gonçalves Sayao<br>Ludwig-Jahn-Str. 10<br>47533 Kleve<br>Germany</p>
+      <p style="margin-bottom:.625rem"><strong>Contact</strong><br>Phone: +49 163 5155907<br>E-mail: <a href="mailto:hello@felipesayao.studio" style="color:#FF7F5C;">hello@felipesayao.studio</a></p>
+      <p style="margin-bottom:.625rem"><strong>VAT ID</strong><br>VAT identification number pursuant to § 27a of the German VAT Act (UStG): DE334327175</p>
+      <p style="margin-bottom:.625rem"><strong>Responsible for content</strong><br>Felipe Gonçalves Sayao, address as above</p>
+      <p style="margin-bottom:0"><strong>Consumer dispute resolution</strong><br>We are neither willing nor obliged to participate in dispute resolution proceedings before a consumer arbitration board.</p>
     </div>
   </div>
 </div>
@@ -2558,13 +2555,11 @@ window.addEventListener('resize',function(){applyWrapperWidth();});
       <p style="margin-bottom:.625rem">The tool's interface fonts and the preview fonts are loaded from Google's servers (fonts.googleapis.com, fonts.gstatic.com). The provider is Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Ireland. To deliver the fonts, your browser connects to Google, which transmits your IP address to Google; a transfer to Google LLC in the USA cannot be ruled out. Google LLC is certified under the EU-U.S. Data Privacy Framework. Legal basis is Art. 6(1)(f) GDPR (our legitimate interest in showing typefaces accurately, which is the core function of a typography tool).</p>
       <p style="margin:1rem 0 .375rem;font-size:.74rem;color:#111;"><strong>4. Font search (Google Fonts Developer API)</strong></p>
       <p style="margin-bottom:.625rem">To offer the search across all Google Fonts, the tool requests the current font list from Google's Web Fonts API (www.googleapis.com) when the page loads. This request also transmits your IP address to Google. Provider, transfer and legal basis as in section 3.</p>
-      <p style="margin:1rem 0 .375rem;font-size:.74rem;color:#111;"><strong>5. Feedback form (Tally)</strong></p>
-      <p style="margin-bottom:.625rem">The feedback form is provided by Tally BV, Ghent, Belgium. Tally's script is loaded when the page opens, which transmits your IP address to Tally. Answers you choose to submit in the form (for example your role, feedback or an optional e-mail address) are processed by Tally on our behalf and used only to improve the tool and, if you leave an e-mail address, to reply to you. Legal basis is Art. 6(1)(a) GDPR (your consent by submitting the form) and Art. 6(1)(f) GDPR for loading the widget. More information: <a href="https://tally.so/help/privacy-policy" target="_blank" rel="noopener" style="color:#FF7F5C;">Tally Privacy Policy</a>.</p>
-      <p style="margin:1rem 0 .375rem;font-size:.74rem;color:#111;"><strong>6. Contact by e-mail</strong></p>
+      <p style="margin:1rem 0 .375rem;font-size:.74rem;color:#111;"><strong>5. Contact by e-mail</strong></p>
       <p style="margin-bottom:.625rem">If you contact us by e-mail, we process your message and contact details to answer your enquiry. Legal basis is Art. 6(1)(b) GDPR where the enquiry relates to a contract or licence, otherwise Art. 6(1)(f) GDPR. We delete the data once it is no longer needed, unless statutory retention periods apply.</p>
-      <p style="margin:1rem 0 .375rem;font-size:.74rem;color:#111;"><strong>7. Your rights</strong></p>
+      <p style="margin:1rem 0 .375rem;font-size:.74rem;color:#111;"><strong>6. Your rights</strong></p>
       <p style="margin-bottom:.625rem">You have the right to access (Art. 15 GDPR), rectification (Art. 16), erasure (Art. 17), restriction of processing (Art. 18), data portability (Art. 20) and to object to processing based on Art. 6(1)(f) (Art. 21). You can withdraw consent at any time with effect for the future (Art. 7(3)). You also have the right to lodge a complaint with a supervisory authority, for example the Landesbeauftragte für Datenschutz und Informationsfreiheit Nordrhein-Westfalen (LDI NRW).</p>
-      <p style="margin:1rem 0 .375rem;font-size:.74rem;color:#111;"><strong>8. Changes</strong></p>
+      <p style="margin:1rem 0 .375rem;font-size:.74rem;color:#111;"><strong>7. Changes</strong></p>
       <p style="margin-bottom:0">We update this policy when the tool or the services it uses change. The current version is always available here.</p>
     </div>
   </div>
@@ -2591,19 +2586,15 @@ window.addEventListener('resize',function(){applyWrapperWidth();});
       Agency license
     </a>
     <button type="button" onclick="document.getElementById('termsModal').classList.add('open')" style="font-size:.62rem;color:rgba(0,0,0,.35);background:none;border:none;cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:2px;">Terms of Service</button>
-    <button type="button" onclick="document.getElementById('imprintModal').classList.add('open')" style="font-size:.62rem;color:rgba(0,0,0,.35);background:none;border:none;cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:2px;">Impressum</button>
+    <button type="button" onclick="document.getElementById('imprintModal').classList.add('open')" style="font-size:.62rem;color:rgba(0,0,0,.35);background:none;border:none;cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:2px;">Legal notice</button>
     <button type="button" onclick="document.getElementById('privacyModal').classList.add('open')" style="font-size:.62rem;color:rgba(0,0,0,.35);background:none;border:none;cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:2px;">Privacy</button>
   </div>
 </footer>
-  <!-- Sticky Tally CTA -->
-  <button
-    class="mfc-sticky-cta"
-    data-tally-open="kdRkZo"
-    data-tally-emoji-text="👋"
-    data-tally-emoji-animation="wave"
-    data-tally-width="420"
-    type="button">
-    Feedback
-  </button>
+  <!-- Sticky contact CTA -->
+  <a class="mfc-sticky-cta" href="mailto:hello@felipesayao.studio?subject=Free%20call%20%E2%80%94%20Magic%20Font%20Calculator&amp;body=Hi%20Felipe%2C%0A%0AI%27d%20like%20to%20book%20a%20free%20call%20about%20" style="display:inline-flex;align-items:center;gap:.5rem;text-decoration:none;">
+    <svg viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" width="14" height="14" aria-hidden="true"><rect x="1" y="1" width="14" height="10" rx="1.5"/><path d="M1 3l7 5 7-5"/></svg>
+    Let's talk
+    <span style="font-size:.56rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:#FF7F5C;border-radius:99px;padding:.18rem .45rem;">Free call</span>
+  </a>
 </body>
 </html>
