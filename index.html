@@ -2233,7 +2233,7 @@ function setActive(id){
 /* ═══════════════════ EXPORT ═══════════════════ */
 function getAllCss(){
   var b=S.base;
-  var header='/* Magic Font Calculator v3.3 — FGS Creative\n   felipesayao.studio\n   Base: '+b+'px | Scale: '+getActiveScaleName()+' */\n\n';
+  var header='/* Magic Font Calculator Beta — Felipe Sayao Studio\n   magicfontcalculator.com · felipesayao.studio\n   Base: '+b+'px | Scale: '+getActiveScaleName()+' */\n\n';
   if(isPro()){
     var out=header+CLAMP_NOTE;
     SCALES.forEach(function(sc){out+='/* '+sc.name+' ('+sc.rl+') */\n'+getCss(sc,b)+'\n\n';});
@@ -2243,14 +2243,20 @@ function getAllCss(){
   SCALES.forEach(function(sc){out+='/* '+sc.name+' ('+sc.rl+') */\n'+getCssFree(sc,b)+'\n\n';});
   return out;
 }
-document.getElementById('exportBtn').onclick=function(){
-  var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([getAllCss()],{type:'text/css'}));
-  a.download='mfc-'+S.base+'px.css';document.body.appendChild(a);a.click();document.body.removeChild(a);
-};
+/* Download the CSS file and confirm it on the button */
+function downloadCss(btn,name){
+  var url=URL.createObjectURL(new Blob([getAllCss()],{type:'text/css'}));
+  var a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();document.body.removeChild(a);
+  setTimeout(function(){URL.revokeObjectURL(url);},1000);
+  if(btn._resetT)clearTimeout(btn._resetT);
+  if(!btn._orig)btn._orig=btn.innerHTML;
+  btn.innerHTML='&#10003; CSS downloaded';btn.title=name;
+  btn._resetT=setTimeout(function(){btn.innerHTML=btn._orig;btn._resetT=null;},2500);
+}
+document.getElementById('exportBtn').onclick=function(){downloadCss(this,'mfc-'+S.base+'px.css');};
 document.getElementById('exportProBtn').onclick=function(){
   if(!isPro()){openModal();return;}
-  var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([getAllCss()],{type:'text/css'}));
-  a.download='mfc-pro-'+S.base+'px.css';document.body.appendChild(a);a.click();document.body.removeChild(a);
+  downloadCss(this,'mfc-pro-'+S.base+'px.css');
 };
 
 /* ═══════════════════ CALCULATE ═══════════════════ */
